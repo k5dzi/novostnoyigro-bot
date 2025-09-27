@@ -1,0 +1,17 @@
+# Файлы с данными
+news_bot.db
+news_bot.log
+env.txt
+
+# Папки Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Настройки IDE
+.idea/
+Profile.txt
+
+# Системные файлы
+.DS_Store
