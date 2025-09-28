@@ -542,9 +542,7 @@ class NewsBot:
         logger.info("🚀 Запуск публикации новостей")
 
         try:
-            # Добавляем задержку чтобы избежать блокировки Telegram
-            import time
-            time.sleep(2)
+
 
             fresh_articles = await self.collect_news()
             # ... остальной код
@@ -599,14 +597,15 @@ class NewsBot:
         )]
 
     def setup_schedule(self):
-        """ТЕСТОВОЕ РАСПИСАНИЕ - КАЖДУЮ МИНУТУ"""
+        """Настраивает случайное расписание на день"""
+        self.daily_schedule = Config.generate_random_schedule()
+
         # Очищаем старое расписание
         schedule.clear()
 
-        # ТЕСТ: запуск каждую минуту
-        schedule.every(3).minutes.do(lambda: asyncio.run(self.publish_news()))
-
-        logger.info("⏰ ТЕСТОВОЕ РАСПИСАНИЕ: публикация КАЖДУЮ МИНУТУ")
+        # Создаем новое расписание
+        for time_str in self.daily_schedule:
+            schedule.every().day.at(time_str).do(lambda: asyncio.run(self.publish_news()))
 
         logger.info(f"⏰ Расписание на день настроено:")
         for i, time_str in enumerate(self.daily_schedule, 1):
