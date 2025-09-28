@@ -19,7 +19,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler(encoding='utf-8'),
+        logging.FileHandler('news_bot.log', encoding='utf-8'),
         logging.StreamHandler()
     ]
 )
@@ -33,7 +33,6 @@ class Config:
 
     # Базовые часы (с 7:00 до 00:00)
     BASE_HOURS = list(range(7, 24)) + [0]  # [7, 8, 9, ..., 23, 0]
-
     MAX_MESSAGE_LENGTH = 1024
     RSS_LIMIT = 15
     HTML_LIMIT = 10
@@ -595,15 +594,14 @@ class NewsBot:
         )]
 
     def setup_schedule(self):
-        """Настраивает случайное расписание на день"""
-        self.daily_schedule = Config.generate_random_schedule()
-
+        """ТЕСТОВОЕ РАСПИСАНИЕ - КАЖДУЮ МИНУТУ"""
         # Очищаем старое расписание
         schedule.clear()
 
-        # Создаем новое расписание
-        for time_str in self.daily_schedule:
-            schedule.every().day.at(time_str).do(lambda: asyncio.run(self.publish_news()))
+        # ТЕСТ: запуск каждую минуту
+        schedule.every(1).minutes.do(lambda: asyncio.run(self.publish_news()))
+
+        logger.info("⏰ ТЕСТОВОЕ РАСПИСАНИЕ: публикация КАЖДУЮ МИНУТУ")
 
         logger.info(f"⏰ Расписание на день настроено:")
         for i, time_str in enumerate(self.daily_schedule, 1):
