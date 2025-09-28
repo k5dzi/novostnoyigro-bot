@@ -542,7 +542,12 @@ class NewsBot:
         logger.info("🚀 Запуск публикации новостей")
 
         try:
+            # Добавляем задержку чтобы избежать блокировки Telegram
+            import time
+            time.sleep(2)
+
             fresh_articles = await self.collect_news()
+            # ... остальной код
 
             if not fresh_articles:
                 logger.warning("📭 Новости не найдены, используем резерв")
@@ -599,7 +604,7 @@ class NewsBot:
         schedule.clear()
 
         # ТЕСТ: запуск каждую минуту
-        schedule.every(1).minutes.do(lambda: asyncio.run(self.publish_news()))
+        schedule.every(3).minutes.do(lambda: asyncio.run(self.publish_news()))
 
         logger.info("⏰ ТЕСТОВОЕ РАСПИСАНИЕ: публикация КАЖДУЮ МИНУТУ")
 
